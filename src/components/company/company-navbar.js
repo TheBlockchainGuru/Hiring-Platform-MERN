@@ -140,7 +140,7 @@ export const CompanyNavbar = (props) => {
               Create Assessment
             </Button>
             <Button
-              onClick={() => Router.push("/company")}
+              onClick={() => Router.push("/account/plan")}
               size="medium"
               sx={{ mx: 1 }}
               variant="outlined"

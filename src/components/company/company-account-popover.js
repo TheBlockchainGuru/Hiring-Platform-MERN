@@ -41,37 +41,37 @@ export const CompanyAccountPopover = (props) => {
   };
   const arr = [
     {
-      link: "/company",
+      link: "/account/my-account",
       title: "My Account",
     },
     {
-      link: "/company",
+      link: "/account/company-account",
       title: "Company Account",
     },
     {
-      link: "/company",
+      link: "/account/team",
       title: "Team",
     },
     {
-      link: "/company",
+      link: "/account/notifications",
       title: "Notification",
     },
     {
-      link: "/company",
+      link: "/account/billing",
       title: "Current Plan and Billing Details",
     },
     {
-      link: "/company",
+      link: "/account/plan",
       title: "Plan Types",
     },
-    {
-      link: "/company",
-      title: "Integration",
-    },
-    {
-      link: "/company",
-      title: "Help",
-    },
+    // {
+    //   link: "/account/integraion",
+    //   title: "Integration",
+    // },
+    // {
+    //   link: "/company",
+    //   title: "Help",
+    // },
   ];
   return (
     <Popover
@@ -121,7 +121,7 @@ export const CompanyAccountPopover = (props) => {
         })}
 
         <Divider />
-        <MenuItem>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>

@@ -20,6 +20,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { UserCircle as UserCircleIcon } from "../../icons/user-circle";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import Router from "next/router";
 
 export const CompanyMyassessmentCard = (props) => {
   const { info } = props;
@@ -93,6 +94,9 @@ export const CompanyMyassessmentCard = (props) => {
               bgcolor: "green",
               color: "white",
               " &:hover": { bgcolor: "#008000ad" },
+            }}
+            onClick={() => {
+              Router.push("/scripts/edit");
             }}
           >
             Open

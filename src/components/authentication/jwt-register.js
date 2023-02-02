@@ -1,9 +1,17 @@
-import { useRouter } from 'next/router';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import { Box, Button, Checkbox, FormHelperText, TextField, Typography, Link } from '@mui/material';
-import { useAuth } from '../../hooks/use-auth';
-import { useMounted } from '../../hooks/use-mounted';
+import { useRouter } from "next/router";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { Autocomplete, Box, Button, Checkbox, FormHelperText, TextField, Typography, Link } from "@mui/material";
+import { useAuth } from "../../hooks/use-auth";
+import { useMounted } from "../../hooks/use-mounted";
+
+const countries = [
+  { text: "More than 500", value: "10" },
+  { text: "101-500", value: "500" },
+  { text: "51-100", value: "100" },
+  { text: "10-50", value: "50" },
+  { text: "Less than 10", value: "10" },
+];
 
 export const JWTRegister = (props) => {
   const isMounted = useMounted();
@@ -11,37 +19,24 @@ export const JWTRegister = (props) => {
   const { register } = useAuth();
   const formik = useFormik({
     initialValues: {
-      email: '',
-      name: '',
-      password: '',
+      email: "",
+      name: "",
+      password: "",
       policy: false,
-      submit: null
+      submit: null,
     },
     validationSchema: Yup.object({
-      email: Yup
-        .string()
-        .email('Must be a valid email')
-        .max(255)
-        .required('Email is required'),
-      name: Yup
-        .string()
-        .max(255)
-        .required('Name is required'),
-      password: Yup
-        .string()
-        .min(7)
-        .max(255)
-        .required('Password is required'),
-      policy: Yup
-        .boolean()
-        .oneOf([true], 'This field must be checked')
+      email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
+      name: Yup.string().max(255).required("Name is required"),
+      password: Yup.string().min(7).max(255).required("Password is required"),
+      policy: Yup.boolean().oneOf([true], "This field must be checked"),
     }),
     onSubmit: async (values, helpers) => {
       try {
         await register(values.email, values.name, values.password);
 
         if (isMounted()) {
-          const returnUrl = router.query.returnUrl || '/dashboard';
+          const returnUrl = router.query.returnUrl || "/dashboard";
           router.push(returnUrl).catch(console.error);
         }
       } catch (err) {
@@ -53,97 +48,41 @@ export const JWTRegister = (props) => {
           helpers.setSubmitting(false);
         }
       }
-    }
+    },
   });
 
   return (
-    <form
-      noValidate
-      onSubmit={formik.handleSubmit}
-      {...props}>
-      <TextField
-        error={Boolean(formik.touched.name && formik.errors.name)}
-        fullWidth
-        helperText={formik.touched.name && formik.errors.name}
-        label="Name"
-        margin="normal"
-        name="name"
-        onBlur={formik.handleBlur}
-        onChange={formik.handleChange}
-        value={formik.values.name}
-      />
-      <TextField
-        error={Boolean(formik.touched.email && formik.errors.email)}
-        fullWidth
-        helperText={formik.touched.email && formik.errors.email}
-        label="Email Address"
-        margin="normal"
-        name="email"
-        onBlur={formik.handleBlur}
-        onChange={formik.handleChange}
-        type="email"
-        value={formik.values.email}
-      />
-      <TextField
-        error={Boolean(formik.touched.password && formik.errors.password)}
-        fullWidth
-        helperText={formik.touched.password && formik.errors.password}
-        label="Password"
-        margin="normal"
-        name="password"
-        onBlur={formik.handleBlur}
-        onChange={formik.handleChange}
-        type="password"
-        value={formik.values.password}
-      />
+    <form noValidate onSubmit={formik.handleSubmit} {...props}>
+      <TextField error={Boolean(formik.touched.name && formik.errors.name)} fullWidth helperText={formik.touched.name && formik.errors.name} label="Company Name" margin="normal" name="company-name" onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.name} />
+      <TextField error={Boolean(formik.touched.name && formik.errors.name)} fullWidth helperText={formik.touched.name && formik.errors.name} label="Full Name" margin="normal" name="name" onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.name} />
+      <TextField error={Boolean(formik.touched.email && formik.errors.email)} fullWidth helperText={formik.touched.email && formik.errors.email} label="Email Address" margin="normal" name="email" onBlur={formik.handleBlur} onChange={formik.handleChange} type="email" value={formik.values.email} />
+      <TextField error={Boolean(formik.touched.password && formik.errors.password)} fullWidth helperText={formik.touched.password && formik.errors.password} label="Password" margin="normal" name="password" onBlur={formik.handleBlur} onChange={formik.handleChange} type="password" value={formik.values.password} />
+      <Autocomplete getOptionLabel={(option) => option.text} options={countries} renderInput={(params) => <TextField {...params} fullWidth label="How many people do you plan to hire this year?" name="how-many-people-to-hire" />} />
       <Box
         sx={{
-          alignItems: 'center',
-          display: 'flex',
+          alignItems: "center",
+          display: "flex",
           ml: -1,
-          mt: 2
+          mt: 2,
         }}
       >
-        <Checkbox
-          checked={formik.values.policy}
-          name="policy"
-          onChange={formik.handleChange}
-        />
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          I have read the
-          {' '}
-          <Link
-            component="a"
-            href="#"
-          >
+        <Checkbox checked={formik.values.policy} name="policy" onChange={formik.handleChange} />
+        <Typography color="textSecondary" variant="body2">
+          I have read the{" "}
+          <Link component="a" href="#">
             Terms and Conditions
           </Link>
         </Typography>
       </Box>
-      {Boolean(formik.touched.policy && formik.errors.policy) && (
-        <FormHelperText error>
-          {formik.errors.policy}
-        </FormHelperText>
-      )}
+      {Boolean(formik.touched.policy && formik.errors.policy) && <FormHelperText error>{formik.errors.policy}</FormHelperText>}
       {formik.errors.submit && (
         <Box sx={{ mt: 3 }}>
-          <FormHelperText error>
-            {formik.errors.submit}
-          </FormHelperText>
+          <FormHelperText error>{formik.errors.submit}</FormHelperText>
         </Box>
       )}
       <Box sx={{ mt: 2 }}>
-        <Button
-          disabled={formik.isSubmitting}
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-        >
-          Register
+        <Button disabled={formik.isSubmitting} fullWidth size="large" type="submit" variant="contained">
+          Sign Up
         </Button>
       </Box>
     </form>
